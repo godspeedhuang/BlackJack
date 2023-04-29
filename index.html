@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>21 Point Game</title>
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body>
+    <img src="assets/icons/logo.jpg" alt="" class="logo">
+    <h1>B L A C K J A C K</h1>
+    <!-- <p>Click the "Start" button to start a new game.</p> -->
+    <div id="game-board">
+      <div id="dealer-hand">
+        <h2>DEALER</h2>
+        <p id="dealerScore"></p>
+        <div id="dealerCards" class="cards"></div>
+        
+      </div>
+      <div id="result"></div>
+
+      <div id="player-hand">
+        <h2>PLAYER</h2>
+        <p id="playerScore"></p>
+        <div id="playerCards" class="cards"></div>
+        
+      </div>
+      <div id="instruction">Click 'Play' to start the game.</div>
+      <div class="buttons">
+        <button id="start" class="button">PLAY</button>
+        <button id="deal" class="button">DEAL</button>
+        <button id="split" class="button">SPILT</button>
+        <button id="double" class="button">DOUBLE</button>
+        <button id="hit" class="button">HIT</button>
+        <button id="stand" class="button">STAND</button>
+        <button id="surrender" class="button">SURRENDER</button>
+      </div>
+      
+      
+    </div>
+    <div id="money">
+      <p id="bet"></p>
+      <p id="bank"></p>
+      <div class="chips">
+        <img class="chip" src="assets/chips/chip5.png" alt="">
+        <img class="chip" src="assets/chips/chip10.png" alt="">
+        <img class="chip" src="assets/chips/chip50.png" alt="">
+        <img class="chip" src="assets/chips/chip100.png" alt="">
+      </div>
+      
+    </div>
+    <div id="record-table">
+      <table id="record">
+        <thead>
+          <tr>
+            <th>DEALER</th>
+            <th>DEALER SCORE</th>
+            <th>DEALER HAND</th>
+            <th>PLAYER</th>
+            <th>PLAYER SCORE</th>
+            <th>PLAYER HAND</th>
+            <th>BET</th>
+            <th>BANK BALANCE</th>
+          </tr>
+        </thead>
+        <tbody>
+        </tbody>
+      </table>
+    </div>
+
+    
+    <script src="app.js"></script>
+  </body>
+</html>

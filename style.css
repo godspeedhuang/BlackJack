@@ -1,0 +1,149 @@
+/* #cards {
+    display: flex;
+    flex-wrap: wrap;
+} */
+
+*{
+    text-align: center;    
+    font-family: 'Noto Sans TC', sans-serif;
+    /* font-family: 'Roboto', sans-serif; */
+}
+
+.logo{
+    width: 150px;
+}
+
+#result{
+    font-size: 30px;
+    font-weight: 800;
+    color: white;
+    background-color: black;
+    padding: 10px 0px;
+    margin:10px 0px;
+}
+
+#game-board{
+    background-color: #48ae48;
+    border-radius: 10px;
+    margin:0px 10vw;
+    padding: 10px 0px;
+    color:white;
+}
+
+#money{
+    background-color: rgb(205, 205, 205);
+    border-radius: 10px;
+    margin:5px 10vw;
+    padding: 10px 10px;
+}
+
+#money p{
+    color:rgb(77, 77, 77);
+    font-size: 20px;
+    font-weight: 700;
+    display: inline-block;
+    margin:10px 5vw;
+}
+
+.chips{
+    margin-top: 10px;
+}
+
+.chip{
+    margin-left:10px;
+    margin-right: 10px;
+}
+
+#game-board h2{
+    margin-bottom: 0px;
+}
+
+#game-board p{
+    margin-top: 0px;
+}
+
+#game-board button{
+    padding: 10px 30px;
+}
+
+.buttons{
+    margin-top: 10px;
+    margin-bottom: 5px;
+}
+
+button{
+    margin:0 2px;
+    border: none;
+    border-radius: 5px;
+}
+
+.card {
+    /* position:absolute; */
+    width: 100px;
+    height: 150px;
+    /* border: 1px solid black; */
+    margin: 5px;
+    /* padding: 10px; */
+}
+
+.cards{
+    /* background-color: white; */
+    /* border: 1px solid white; */
+    border-radius: 10px;
+    /* width:60%; */
+    height: 160px;
+    margin:0 250px;
+}
+
+/* .card:nth-child(2){
+    translate:-80px;
+}
+
+.card:nth-child(3){
+    translate:-160px;
+} 
+
+.card:nth-child(4){
+    translate:-240px;
+} 
+
+.card:nth-child(5){
+    translate:-320px;
+}  */
+
+h2{
+    display: inline-block;
+}
+
+.chip{
+    width: 100px;
+}
+
+/* #record-table{
+    display: flex;
+    justify-content:  center;
+    align-items: center;
+} */
+
+#record-table{
+    margin: 0 10vw;
+}
+
+table{
+    border-collapse: collapse;
+    border-radius: 10px;
+    /* table-layout: auto; */
+    /* width: 100%; */
+}
+
+th{
+    background-color: hsla(220, 20%, 95%, 0.9);
+}
+
+td, th{
+    border:1px solid #d6d6d6;
+}
+
+td,th{
+    padding:10px;
+}
