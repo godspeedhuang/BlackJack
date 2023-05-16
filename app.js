@@ -1,3 +1,6 @@
+// F24076182 黃軒柏 第四次作業 5/17
+// F24076182 Huang SyuanBo The Fourth Homework 5/17
+
 // 定義基本牌組
 const deck = [
 	{ suit:'', name: 'A', value: 11 },
@@ -18,40 +21,50 @@ const deck = [
 const suits = ['Spades','Hearts','Diamonds','Clubs'];
 
 // 在全域定義畫面中的按鈕
-const splitButton = document.getElementById('split');
-const doubleButton = document.getElementById('double');
-const hitButton = document.getElementById('hit');
-const standButton = document.getElementById('stand');
-const startButton = document.getElementById('start');
-const dealButton = document.getElementById('deal');
-const surrenderButton = document.getElementById('surrender');
+const splitButton = $("#split");
+const doubleButton = $("#double");
+const hitButton = $("#hit");
+const standButton = $("#stand");
+const startButton = $("#start");
+const dealButton = $("#deal");
+const surrenderButton = $("#surrender");
 
 
 // 在全域定義畫面中的顯示畫面
-const result = document.getElementById('result');
-const dealerScore = document.getElementById('dealerScore');
-const playerScore = document.getElementById('playerScore');
-const bank = document.getElementById('bank');
-const bet = document.getElementById('bet');
-const instruction = document.getElementById('instruction');
+const result = $("#result");
+const dealerScore = $("#dealerScore");
+const playerScore = $("#playerScore");
+const bank = $("#bank");
+const bet = $("#bet");
+const instruction = $("#instruction");
+const ad = $("#advertisement");
+const timeDisplay = $("#gameTime");
 
 // recordTable
-const recordTable = document.getElementById('record');
-recordTable.style.display = 'none';
+let tableData;
+const recordTable = $("#record");
+recordTable.hide();
 
 // result
-result.style.display = 'none';
+result.hide();
 
 // chips setting
-const chip5 = document.getElementsByClassName('chip')[0];
-const chip10 = document.getElementsByClassName('chip')[1];
-const chip50 = document.getElementsByClassName('chip')[2];
-const chip100 = document.getElementsByClassName('chip')[3];
-chip5.style.display = 'none';
-chip10.style.display = 'none';
-chip50.style.display = 'none';
-chip100.style.display = 'none';
+const chip5 = $(".chip").eq(0);
+const chip10 = $(".chip").eq(1);
+const chip50 = $(".chip").eq(2);
+const chip100 = $(".chip").eq(3);
+chip5.hide();
+chip10.hide();
+chip50.hide();
+chip100.hide();
 
+// setting avdertisements
+const adPath = [
+        'assets\\advertisements\\001.png',
+        'assets\\advertisements\\002.png',
+        'assets\\advertisements\\003.png',
+        'assets\\advertisements\\004.png',
+    ];
 
 class BlackJack{
     constructor(){
@@ -67,7 +80,7 @@ class BlackJack{
     // 初始化
     initialize(){
         // result消失
-        result.style.display = 'none';
+        result.hide();
 
         // 牌組卡牌分數初始化
         this.newCard = [];
@@ -78,17 +91,17 @@ class BlackJack{
         this.bet = 0;
         
         // 按鈕狀態初始化
-        startButton.disabled = false;
-        splitButton.disabled = true;
-        doubleButton.disabled = true;
-        hitButton.disabled = true;
-        standButton.disabled = true;
-        surrenderButton.disabled = true;
+        startButton.attr("disabled",true);
+        splitButton.attr("disabled",true);
+        doubleButton.attr("disabled",true);
+        hitButton.attr("disabled",true);
+        standButton.attr("disabled",true);
+        surrenderButton.attr("disabled",true);
 
         // 遊戲數據初始化
-        result.innerHTML = '';
-        dealerScore.innerHTML = '';
-        playerScore.innerHTML = '';
+        result.html('');
+        dealerScore.html('');
+        playerScore.html('');
     }
 
     // 生成一個新的牌組
@@ -185,39 +198,41 @@ class BlackJack{
 
         // 顯示dealer分數
         game.dealerScore = game.calculateScore(game.dealerHand);
-        dealerScore.innerText = `SCORE : ${game.dealerScore}`;
+        dealerScore.text(`SCORE : ${game.dealerScore}`);
         
         // 獲得最終結果
         let resultContent = game.renderResult();
-        result.innerHTML = resultContent;
+        result.html(resultContent);
 
     }
 
     // 顯示莊家牌面
     renderDealerCards(hand,firstTime=false){
-        const cardsElement = document.getElementById('dealerCards');
-        cardsElement.innerText = '';
+        const cardsElement = $('#dealerCards');
+        cardsElement.text('');
         for(let i=0;i<hand.length;i++){
-            const cardElement = document.createElement('img');
-            cardElement.className = `card card${i+1}`;
-            cardElement.src = `assets\\cards\\card${hand[i]['suit']}${hand[i]['name']}.png`;
+            const cardElement = $("<img>",{
+                class:`card card${i+1}`,
+                src:`assets\\cards\\card${hand[i]['suit']}${hand[i]['name']}.png`
+            });
             cardsElement.append(cardElement);
         }
         if (firstTime){
-            const secondCard = document.getElementsByClassName('card2')[0];
-            secondCard.src = "assets\\cards\\cardBack_red5.png";
+            const secondCard = $('.card2').eq(0);
+            secondCard.attr("src","assets\\cards\\cardBack_red5.png");
         }
     }
 
     // 顯示玩家牌面
     renderPlayerCards(hand){
-        const cardsElement = document.getElementById('playerCards');
-        cardsElement.innerText = '';
+        const cardsElement = $('#playerCards');
+        cardsElement.text('');
         // 新增卡牌圖面
         for (let i=0; i<hand.length;i++){
-            const cardElement = document.createElement('img');
-            cardElement.className = 'card';
-            cardElement.src = `assets\\cards\\card${hand[i]['suit']}${hand[i]['name']}.png`;
+            const cardElement = $('<img>',{
+                class:'card',
+                src:`assets\\cards\\card${hand[i]['suit']}${hand[i]['name']}.png`
+            });
             cardsElement.append(cardElement);
         }
     }
@@ -233,10 +248,11 @@ class BlackJack{
     renderResult(surrender=false){
         // const resultContent = document.createElement('h2');
         // resultContent.innerText = '';
-        recordTable.style.display = 'table';
-        recordTable.style.width = '100%';
-        
-        result.style.display = 'block';
+        recordTable.show().css({
+            "display":"table",
+            "width":"100%"
+        });
+        result.css("display","block");
         
         let status = '';
         let dealer = '';
@@ -274,7 +290,7 @@ class BlackJack{
         }
 
         // 更新instruction
-        instruction.innerText = "Click 'PLAY' to restart the game."
+        instruction.text("Click 'PLAY' to restart the game.");
 
 
         let playerhands = "";
@@ -285,32 +301,40 @@ class BlackJack{
         for (let i=0;i<this.dealerHand.length;i++){
             dealerhands += `${this.dealerHand[i]['suit']} ${this.dealerHand[i]['name']}, `;
         }
+        
+        // 將表格資料儲存成object
+        const oneGameRecord = {
+            'DEALER':dealer,
+            'DEALER SCORE':this.dealerScore,
+            'DEALER HAND':dealerhands,
+            'PLAYER':player,
+            'PLAYER SCORE':this.playerScore,
+            'PLAYER HAND':playerhands,
+            'BET':this.bet,
+            'BANK BALANCE':this.bank,
+        }
+
+        updateTableData(oneGameRecord);
 
         // 如果銀行存款不足
         if (this.bank<=0){
             alert('Game over!');
-            startButton.disabled = true;
-            surrenderButton.disabled = true;
+            startButton.attr("disabled",true);
+            surrenderButton.attr("disabled",true);
             return 'You go bankrupt. <br> Please Reload the Page (press F5) to Start a New Game.';
         } else {
-            let row = recordTable.insertRow();
-            let cell1 = row.insertCell(0);
-            let cell2 = row.insertCell(1);
-            let cell3 = row.insertCell(2);
-            let cell4 = row.insertCell(3);
-            let cell5 = row.insertCell(4);
-            let cell6 = row.insertCell(5);
-            let cell7 = row.insertCell(6);
-            let cell8 = row.insertCell(7);
+            let row = $("<tr>");
+            let cell1 = $("<td>").text(oneGameRecord['DEALER']);
+            let cell2 = $("<td>").text(oneGameRecord['DEALER SCORE']);
+            let cell3 = $("<td>").text(oneGameRecord['DEALER HAND']);
+            let cell4 = $("<td>").text(oneGameRecord['PLAYER']);
+            let cell5 = $("<td>").text(oneGameRecord['PLAYER SCORE']);
+            let cell6 = $("<td>").text(oneGameRecord['PLAYER HAND']);
+            let cell7 = $("<td>").text(oneGameRecord['BET']);
+            let cell8 = $("<td>").text(oneGameRecord['BANK BALANCE']);
             
-            cell1.innerText = dealer;
-            cell2.innerText = this.dealerScore;
-            cell3.innerText = dealerhands;
-            cell4.innerText = player;
-            cell5.innerText = this.playerScore;
-            cell6.innerText = playerhands;
-            cell7.innerText = `$ ${this.bet}`;
-            cell8.innerText = `$ ${this.bank}`;
+            row.append(cell1,cell2,cell3,cell4,cell5,cell6,cell7,cell8);
+            recordTable.append(row);
 
             return status;
         }
@@ -320,73 +344,73 @@ class BlackJack{
 
 // 創建遊戲
 let game = new BlackJack();
-dealButton.disabled = true;
-hitButton.disabled = true;
-standButton.disabled = true;
-splitButton.disabled = true;
-doubleButton.disabled = true;
-surrenderButton.disabled = true;
+dealButton.attr("disabled",true);
+hitButton.attr("disabled",true);
+standButton.attr("disabled",true);
+splitButton.attr("disabled",true);
+doubleButton.attr("disabled",true);
+surrenderButton.attr("disabled",true);
 
 // 玩家按下Play鍵
-startButton.addEventListener('click',()=>{
+startButton.click(()=>{
     // 每一局一開始都先初始化
     game.initialize();
     game.renderDealerCards(game.dealerHand);
     game.renderPlayerCards(game.playerHand);
-    bank.innerText = `BANK  $ ${game.bank}`;
-    bet.innerText = `BET  $ ${game.bet}`;
-    instruction.innerHTML = "Click Chips' icon to set your BET. <br>Then Click 'DEAL' to deal the cards."
+    bank.text(`BANK  $ ${game.bank}`);
+    bet.text(`BET  $ ${game.bet}`);
+    instruction.html("Click Chips' icon to set your BET. <br>Then Click 'DEAL' to deal the cards.");
     
     // 調整按鈕狀態
-    startButton.disabled = true;
+    startButton.attr("disabled",true);
 
     // 設定chips出現
-    chip5.style.display = 'inline';
-    chip10.style.display = 'inline';
-    chip50.style.display = 'inline';
-    chip100.style.display = 'inline';
+    chip5.show().css("display","inline");
+    chip10.show().css("display","inline");
+    chip50.show().css("display","inline");
+    chip100.show().css("display","inline");
 })
 
 // 玩家設定Bet
-chip5.addEventListener('click',()=>{
+chip5.click(()=>{
     if (game.bank-game.bet>=5){
         game.bet +=5;
-        bet.innerText = `BET  $ ${game.bet}`;
+        bet.text(`BET  $ ${game.bet}`);
     } else{
         alert('exceeding your bank money');
     }
-    dealButton.disabled = false;
+    dealButton.attr("disabled",false);
 })
-chip10.addEventListener('click',()=>{
+chip10.click(()=>{
     if (game.bank-game.bet>=10){
         game.bet +=10;
-        bet.innerText = `BET  $ ${game.bet}`;
+        bet.text(`BET  $ ${game.bet}`);
     } else{
         alert('exceeding your bank money');
     }
-    dealButton.disabled = false;
+    dealButton.attr("disabled",false);
 })
-chip50.addEventListener('click',()=>{
+chip50.click(()=>{
     if (game.bank-game.bet>=50){
         game.bet +=50;
-        bet.innerText = `BET  $ ${game.bet}`;
+        bet.text(`BET  $ ${game.bet}`);
     } else{
         alert('exceeding your bank money');
     }
-    dealButton.disabled = false;
+    dealButton.attr("disabled",false);
 })
-chip100.addEventListener('click',()=>{
+chip100.click(()=>{
     if (game.bank-game.bet>=100){
         game.bet +=100;
-        bet.innerText = `BET  $ ${game.bet}`;
+        bet.text(`BET  $ ${game.bet}`);
     } else{
         alert('exceeding your bank money');
     }
-    dealButton.disabled = false;
+    dealButton.attr("disabled",false);
 })
 
 // 玩家按下deal鍵
-dealButton.addEventListener('click',()=>{
+dealButton.click(()=>{
     // 如果沒設置bet
     if (!game.bet){
         alert('You need to set the bet by pressing chips.');
@@ -395,8 +419,8 @@ dealButton.addEventListener('click',()=>{
     
     // 更新銀行金額
     game.bank-=game.bet;
-    bank.innerText = `BANK  $ ${game.bank}`;
-    instruction.innerHTML = '';
+    bank.text(`BANK  $ ${game.bank}`);
+    instruction.html('');
     // 洗牌後生成新的卡牌
     game.createDeck();
     // 發牌
@@ -406,28 +430,28 @@ dealButton.addEventListener('click',()=>{
     game.renderPlayerCards(game.playerHand);
     // 計算玩家分數
     game.playerScore = game.calculateScore(game.playerHand);
-    playerScore.innerText = `SCORE : ${game.playerScore}`;
+    playerScore.text(`SCORE : ${game.playerScore}`);
     
     // 調整按鈕狀態
-    dealButton.disabled = true;
-    hitButton.disabled = false;
-    standButton.disabled = false;
-    doubleButton.disabled = false;
-    surrenderButton.disabled = false;
+    dealButton.attr("disabled",true);
+    hitButton.attr("disabled",false);
+    standButton.attr("disabled",false);
+    doubleButton.attr("disabled",false);
+    surrenderButton.attr("disabled",false);
 
     if(game.playerHand[0]['name']==game.playerHand[1]['name']){
-        splitButton.disabled = false;
+        splitButton.attr("disabled",false);;
     }
 
     // 設定chips消失
-    chip5.style.display = 'none';
-    chip10.style.display = 'none';
-    chip50.style.display = 'none';
-    chip100.style.display = 'none';
+    chip5.hide();
+    chip10.hide();
+    chip50.hide();
+    chip100.hide();
 })
 
 // 玩家按下double鍵
-doubleButton.addEventListener('click',()=>{    
+doubleButton.click(()=>{    
     // double
     game.bank-=game.bet;
     // 判斷double完錢夠不夠
@@ -439,7 +463,7 @@ doubleButton.addEventListener('click',()=>{
         game.playerHand.push(game.drawCard());
         game.renderPlayerCards(game.playerHand);
         game.playerScore = game.calculateScore(game.playerHand);
-        playerScore.innerText = `SCORE : ${game.playerScore}`;
+        playerScore.text(`SCORE : ${game.playerScore}`);
 
         // double
         game.bet = game.bet*2;
@@ -447,7 +471,7 @@ doubleButton.addEventListener('click',()=>{
         if (game.playerScore>21){
             // game.bank-=(game.bet/2);
             // bank.innerText = `Bank:${game.bank}`;
-            result.innerHTML = game.renderResult();
+            result.html(game.renderResult());
             
         } else{
             game.dealerTurn();
@@ -458,69 +482,209 @@ doubleButton.addEventListener('click',()=>{
         }
         
         // 更新頁面顯示
-        bank.innerText = `BANK  $ ${game.bank}`;
-        bet.innerText = `BET  $ ${game.bet}`;
+        bank.text(`BANK  $ ${game.bank}`);
+        bet.text(`BET  $ ${game.bet}`);
 
         // 按鍵狀態
-        doubleButton.disabled = true;
-        hitButton.disabled = true;
-        standButton.disabled=true;
-        startButton.disabled = false;
-        splitButton.disabled = true;
-        surrenderButton.disabled = true;
+        doubleButton.attr("disabled",true);
+        hitButton.attr("disabled",true);
+        standButton.attr("disabled",true);
+        startButton.attr("disabled",false);
+        splitButton.attr("disabled",true);
+        surrenderButton.attr("disabled",true);
     }
 
 })
 
 
 // 玩家按下hit鍵
-hitButton.addEventListener('click',()=>{
+hitButton.click(()=>{
     game.playerHand.push(game.drawCard());
     game.renderPlayerCards(game.playerHand);
     game.playerScore = game.calculateScore(game.playerHand);
-    playerScore.innerText = `SCORE : ${game.playerScore}`;
+    playerScore.text(`SCORE : ${game.playerScore}`);
     if (game.playerScore>21){
-        result.innerHTML = game.renderResult();
+        result.html(game.renderResult());
         
         // 按鍵狀態
-        doubleButton.disabled = true;
-        hitButton.disabled = true;
-        standButton.disabled=true;
-        startButton.disabled = false;
-        surrenderButton.disabled = true;
-        splitButton.disabled = true;
+        doubleButton.attr("disabled",true);
+        hitButton.attr("disabled",true);
+        standButton.attr("disabled",true);
+        startButton.attr("disabled",false);
+        surrenderButton.attr("disabled",true);
+        splitButton.attr("disabled",true);
     }
 })
 
 // 玩家按下stand鍵
-standButton.addEventListener('click',()=>{
+standButton.click(()=>{
     game.dealerTurn();
 
     // 更新銀行及賭注
-    bank.innerText = `BANK  $ ${game.bank}`;
-    bet.innerText = `BET  $ 0`;
+    bank.text(`BANK  $ ${game.bank}`);
+    bet.text(`BET  $ 0`);
 
     // 設定按鈕狀態
-    doubleButton.disabled = true;
-    hitButton.disabled = true;
-    standButton.disabled = true;
-    startButton.disabled = false;
-    splitButton.disabled = true;
-    surrender.disabled = true;
+    doubleButton.attr("disabled",true);
+    hitButton.attr("disabled",true);
+    standButton.attr("disabled",true);
+    startButton.attr("disabled",false);
+    splitButton.attr("disabled",true);
+    surrenderButton.attr("disabled",true);
 })
 
 // 玩家按下surrender鍵
-surrenderButton.addEventListener('click',()=>{
-    result.innerHTML = game.renderResult(true);
+surrenderButton.click(()=>{
+    result.html(game.renderResult(true));
     // game.initialize();
 
     // 設定按鈕狀態
-    surrenderButton.disabled = true;
-    doubleButton.disabled = true;
-    hitButton.disabled = true;
-    standButton.disabled = true;
-    startButton.disabled = false;
+    surrenderButton.attr("disabled",true);
+    doubleButton.attr("disabled",true);
+    hitButton.attr("disabled",true);
+    standButton.attr("disabled",true);
+    startButton.attr("disabled",false);
 })
+
+// 隨機顯示廣告
+function adDisplay(){
+    let randomIndex = Math.floor(Math.random()*adPath.length);
+    let randomAd = adPath[randomIndex];
+    let interval = 3000;
+
+    let adElement = $('<img>',{
+        src:randomAd,
+        alt:"Floating Advertisement"
+    });
+    adElement.css({
+        position:'fixed',
+        right:'10px',
+        top:'10px',
+        width:'450px',
+        textAlign:'center',
+        zIndex:'999',
+    })
+    ad.append(adElement);
+
+    function randomShowImage(){
+        let randomIndex = Math.floor(Math.random()*adPath.length);
+        let randomAd = adPath[randomIndex];
+        adElement.attr('src',randomAd);
+    };
+    setInterval(randomShowImage,interval);
+}
+
+// 提醒user太久沒有操作
+function remindUser(){
+    let idleTime = 0;
+    let idleInterval = 5000; // 每5秒檢查一次
+    let maxIdleTime = 30000; // 30秒是閒置最大值
+    
+    // 重置計時器
+    function resetTime(){
+        idleTime=0;
+    };
+
+    // 監聽user行為
+    $(document).on('mousemove keydown',()=>{
+        resetTime();
+    });
+
+    setInterval(()=>{
+        idleTime += idleInterval;
+        if (idleTime>maxIdleTime){
+            alert("You have idled for a while, please press the button.");
+            resetTime();
+        }
+    }, idleInterval);
+}
+
+// sort table
+const getCellValue = (tr,idx) => tr.children[idx].innerText || tr.children[idx].textContent;
+const comparer = function(idx,asc){
+    return function(a,b){
+        return function(v1,v2){
+            return (v1 !== '' && v2 !== '' && !isNaN(v1) && !isNaN(v1))
+                ? v1-v2
+                : v1.toString().localeCompare(v2);
+        }(getCellValue(asc ? a:b, idx), getCellValue(asc?b:a,idx));
+    }
+};
+
+// 計算遊戲時間並儲存進sessionStorage
+let gameTime;
+function startGameTime(){
+    if (sessionStorage.getItem('gameTime')){
+        gameTime = sessionStorage.getItem('gameTime');
+    } else {
+        gameTime=0;
+    }
+    let timer;
+    timer = setInterval(updateGameTime,1000);
+    // sessionStorage.setItem('gameTime',gameTime);
+}
+function updateGameTime(){
+    gameTime++; // 遊戲時間增加1秒
+    sessionStorage.setItem('gameTime',gameTime);
+    displayGameTime(); // 更新顯示
+}
+function displayGameTime(){
+    const minutes = Math.floor(gameTime/60);
+    const seconds = gameTime % 60;
+    timeDisplay.html(`Play time <br>${minutes} min ${seconds} sec`);
+}
+
+// 遊戲record資訊存進localStroage
+function importTableData(){
+    const localData = localStorage.getItem('tableData');
+    if (localData){
+        tableData = JSON.parse(localData);
+        // render table content
+        tableData.forEach((oneGameRecord)=>{
+            let row = $("<tr>");
+            let cell1 = $("<td>").text(oneGameRecord['DEALER']);
+            let cell2 = $("<td>").text(oneGameRecord['DEALER SCORE']);
+            let cell3 = $("<td>").text(oneGameRecord['DEALER HAND']);
+            let cell4 = $("<td>").text(oneGameRecord['PLAYER']);
+            let cell5 = $("<td>").text(oneGameRecord['PLAYER SCORE']);
+            let cell6 = $("<td>").text(oneGameRecord['PLAYER HAND']);
+            let cell7 = $("<td>").text(oneGameRecord['BET']);
+            let cell8 = $("<td>").text(oneGameRecord['BANK BALANCE']);
+            
+            row.append(cell1,cell2,cell3,cell4,cell5,cell6,cell7,cell8);
+            recordTable.append(row);
+        })
+        recordTable.show().css({
+            "display":"table",
+            "width":"100%"
+        });
+    }
+}
+
+// 更新record資訊
+function updateTableData(oneGameRecord){
+    tableData.push(oneGameRecord);
+    localStorage.setItem('tableData',JSON.stringify(tableData));
+}
+
+// DOM載入後就執行
+$(document).ready(function(){
+    // 從sessionStorage中載入遊戲時間
+    startGameTime();
+    // 從localStorage中載入遊戲紀錄
+    importTableData();
+    // 隨機撥放廣告
+    adDisplay();
+    // 遊戲閒置提示
+    remindUser();
+    // 表格排序
+    document.querySelectorAll('th').forEach(th => th.addEventListener('click', (() => {
+        const table = th.closest('table');
+        Array.from(table.querySelectorAll('tr:nth-child(n+2)'))
+            .sort(comparer(Array.from(th.parentNode.children).indexOf(th), this.asc = !this.asc))
+            .forEach(tr => table.appendChild(tr) );
+    })));
+});
 
 
 // 遊戲開始

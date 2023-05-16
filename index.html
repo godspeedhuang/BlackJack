@@ -1,14 +1,26 @@
+<!-- 
+F24076182 黃軒柏 第四次作業 5/17
+F24076182 Huang SyuanBo The Fourth Homework 5/17
+-->
+
 <!DOCTYPE html>
 <html>
   <head>
     <meta charset="utf-8">
     <title>21 Point Game</title>
+    
+    <!-- CSS -->
     <link rel="stylesheet" href="style.css">
+    
+    <!-- JQuery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+
   </head>
   <body>
     <img src="assets/icons/logo.jpg" alt="" class="logo">
     <h1>B L A C K J A C K</h1>
     <!-- <p>Click the "Start" button to start a new game.</p> -->
+    <div id="gameTime"></div>
     <div id="game-board">
       <div id="dealer-hand">
         <h2>DEALER</h2>
@@ -50,7 +62,7 @@
     </div>
     <div id="record-table">
       <table id="record">
-        <thead>
+        <!-- <thead> -->
           <tr>
             <th>DEALER</th>
             <th>DEALER SCORE</th>
@@ -61,12 +73,13 @@
             <th>BET</th>
             <th>BANK BALANCE</th>
           </tr>
-        </thead>
+        <!-- </thead>
         <tbody>
-        </tbody>
+        </tbody> -->
       </table>
     </div>
 
+    <div id="advertisement"></div>
     
     <script src="app.js"></script>
   </body>
